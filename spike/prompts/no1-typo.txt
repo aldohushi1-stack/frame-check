@@ -1,0 +1,1 @@
+Fix the typo in this sentence: 'Teh quick brown fox jumsp over the lazy dog.' Reply with the corrected sentence only.
