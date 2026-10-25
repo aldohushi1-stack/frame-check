@@ -9,7 +9,9 @@ An Agent Skill that checks the framing of persuasive text, both ways.
   two or three rewrites on different frames and runs each through a four-question honesty gate —
   with the rejected ones shown, not hidden.
 
-Ten frames, one gate, three verdicts. Built on Loftus & Palmer (1974), Loftus & Pickrell (1995) and
+Ten frames, one gate, three verdicts.
+
+**Try it without installing anything:** [blueprintau.com/frame-check](https://blueprintau.com/frame-check/) — paste an offer into *What's the catch?*; it runs in your browser and sends nothing anywhere. Built on Loftus & Palmer (1974), Loftus & Pickrell (1995) and
 Tversky & Kahneman (1981): words edit what people remember and what they choose.
 
 ## Install
@@ -30,6 +32,16 @@ Once installed, the agent loads it on its own when the request fits. You can als
 /frame-check what's the catch — <paste the offer>
 /frame-check frame this — <paste your draft>
 ```
+
+## What's in the repo
+
+| Path | What |
+| --- | --- |
+| `SKILL.md` | The skill your agent loads |
+| `samples/` | Five runs, before and after, unedited ([index](samples)) |
+| `spike/` | The trigger test that gated release: 9/9 loaded, 0/6 false, honest control Fair 3/3 |
+| `checker/` | *What's the catch?* — the offline pattern checker, its tests (`npm test`) and build |
+| `site/` | The landing page and the built checker, as deployed |
 
 ## What it is not
 

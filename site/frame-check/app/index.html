@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's the catch? — Frame Check</title>
+<meta name="description" content="Paste an offer, ad, quote or listing. See the frames — the words doing the persuading — and the question each one hides. Runs in your browser; nothing leaves the page.">
+<meta name="color-scheme" content="light">
+<style>
+:root{--paper:#F8FAFC;--card:#FFFFFF;--ink:#0F172A;--ink-2:#334155;--ink-3:#64748B;--line:#E2E8F0;--muted:#F1F5F9;--accent:#EA580C;--accent-ink:#C2410C;--accent-soft:#FFF1E8;--mark:#FED7AA;
+--sans:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--mono:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+a{color:var(--accent-ink)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.brand{font-weight:700;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--accent)}
+.privacy{font-size:13px;color:var(--ink-3)}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;letter-spacing:-.02em;margin:0 0 8px}
+.lede{color:var(--ink-2);margin:0 0 20px;max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (min-width:861px){.grid>section:first-child{position:sticky;top:16px}}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+label.lbl{display:block;font-weight:600;font-size:14px;margin-bottom:8px}
+textarea{width:100%;min-height:220px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:12px;font:15px/1.55 var(--sans);color:var(--ink);background:#fff}
+textarea:focus,button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--mark);outline-offset:2px;border-color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{font:600 14px/1 var(--sans);border-radius:999px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;min-height:40px}
+button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+button:hover{border-color:var(--ink-3)}
+#summary{font-weight:600;margin:0 0 10px}
+#rendered{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--muted);border-radius:10px;padding:12px;font-size:15px;margin-bottom:14px;max-height:340px;overflow:auto}
+#rendered:empty{display:none}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+mark sup{font:700 10px/1 var(--mono);color:var(--accent-ink);margin-left:2px}
+ol#findings{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+ol#findings li{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:10px 12px;background:#fff}
+.fhead{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.num{font:700 12px/1 var(--mono);color:var(--accent-ink)}
+.frame{font-weight:700}
+.where{font:12px/1 var(--mono);color:var(--ink-3)}
+.quote{margin:4px 0;color:var(--ink-2);overflow-wrap:anywhere}
+.flip{margin:0;font-weight:600}
+.maths{margin-top:8px;padding:8px 10px;background:var(--accent-soft);border-radius:8px;font-size:14px}
+.maths label{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:14px}
+.maths input{width:5.5em;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.total{font-weight:700}
+.hint{margin-left:6px;font-size:13px;padding:6px 10px;min-height:32px}
+.empty{color:var(--ink-3)}
+.note{font-size:13px;color:var(--ink-3);margin-top:14px}
+footer{margin-top:28px;font-size:14px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+code{font-family:var(--mono);font-size:.92em;background:var(--muted);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="../">Frame <span>Check</span></a>
+    <span class="privacy">Runs in your browser. Nothing you paste leaves this page.</span>
+  </header>
+
+  <h1>What's the catch?</h1>
+  <p class="lede">Paste an offer, ad, quote or listing. The words doing the persuading light up, each with the question it would rather you didn't ask.</p>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="in-lbl">
+      <label class="lbl" id="in-lbl" for="input">The text</label>
+      <textarea id="input" spellcheck="false" placeholder="Paste the ad, quote, listing or pricing page here…"></textarea>
+      <div class="row">
+        <button type="button" id="example">Try an example</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <p class="note">This finds surface patterns only — "up to", "only 3 left", "$15 a week". The subtle ones, and the verdict, are the <a href="../#install">Frame Check skill</a>'s job.</p>
+    </section>
+
+    <section class="card" aria-labelledby="out-lbl">
+      <h2 class="lbl" id="out-lbl" style="margin:0 0 8px">The frames</h2>
+      <p id="summary" aria-live="polite" class="empty">Nothing yet. Paste something on the left.</p>
+      <div id="rendered" aria-label="Your text with the frames marked"></div>
+      <ol id="findings"></ol>
+      <div class="row" id="actions" hidden>
+        <button type="button" class="primary" id="copy">Copy a prompt for your agent</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Frame Check is free and open source (MIT) — <a href="https://github.com/aldohushi1-stack/frame-check">github.com/aldohushi1-stack/frame-check</a>.
+    Not a lie detector, not legal advice: a frame is a choice of words, not proof of intent.
+    Made in Adelaide by Aldo Hushi · <a href="https://blueprintau.com">BlueprintAU</a>
+  </footer>
+</div>
+
+<script>
+/* Frame Check — "What's the catch?" pattern engine.
+ * Finds surface frames in persuasive text by pattern, names them with the skill's toolkit,
+ * and asks each one's flip as a question. No model, no network. Judgment stays with the reader
+ * (and with the frame-check skill, for the subtle ones).
+ * MIT — Aldo Hushi. https://github.com/aldohushi1-stack/frame-check
+ */
+(function (root) {
+  "use strict";
+
+  var NUM = "\\d[\\d,]*(?:\\.\\d{1,2})?";
+  var MONEY = "\\$\\s?" + NUM + "(?:k|m)?";
+  var PCT = "\\d+(?:\\.\\d+)?\\s?%";
+
+  var FRAMES = {
+    small: "Small unit",
+    upto: "\"Up to\" / \"from\"",
+    anchor: "Anchor",
+    urgency: "Urgency / scarcity",
+    social: "Social proof",
+    authority: "Authority",
+    relative: "Relative vs absolute",
+    loss: "Gain vs loss",
+    loaded: "Loaded words",
+    omission: "Omission / default",
+  };
+
+  var FLIPS = {
+    small: "What is the total over the full term?",
+    upto: "What does a typical person actually get or pay?",
+    anchor: "Compared with what price — and did anyone ever pay it?",
+    urgency: "What actually happens if you wait?",
+    social: "How many, named, and can you check them?",
+    authority: "Which study, how many people, and who paid for it?",
+    relative: "From what starting number — what is it in absolute terms?",
+    loss: "Told as a gain instead, is it still true for you?",
+    loaded: "What is the plainest word for this?",
+    omission: "What does the fine print say, and does it change the total?",
+  };
+
+  // priority: when two matches overlap, the higher one is kept.
+  var DETECTORS = [
+    { k: "small", p: 9, re: new RegExp("\\$\\s?(" + NUM + ")\\s*(?:a|per|\\/)\\s*(week|wk|fortnight|day)\\b", "gi"), maths: true },
+    { k: "small", p: 8, re: /\b(?:less than|under|for the price of)\s+a\s+(?:coffee|cup of coffee|takeaway coffee|pie|pizza)(?:\s+a\s+(?:day|week))?/gi },
+    { k: "upto", p: 7, re: new RegExp("\\b(?:save\\s+)?up to\\s+(?:" + MONEY + "|" + PCT + ")", "gi") },
+    { k: "upto", p: 6, re: new RegExp("\\b(?:from|starting (?:at|from)|as low as)\\s+(?:only\\s+|just\\s+)?" + MONEY, "gi") },
+    { k: "anchor", p: 7, re: new RegExp("\\b(?:was|rrp|normally|usually|valued at|worth over|worth)\\s*:?\\s*" + MONEY, "gi") },
+    { k: "anchor", p: 6, re: new RegExp("\\bsave\\s+(?:over\\s+|more than\\s+)?(?:" + MONEY + "|" + PCT + ")", "gi") },
+    { k: "anchor", p: 6, re: new RegExp("\\b" + PCT + "\\s+off\\b", "gi") },
+    { k: "anchor", p: 5, re: new RegExp("\\bindustry average(?:\\s+is)?\\s+" + MONEY + "\\+?", "gi") },
+    { k: "urgency", p: 7, re: /\bonly\s+(?:have\s+)?(?:\d+|one|two|three|four|five|six|a few|a handful of)\s+(?:\w+\s+)?(?:left|remaining|available|spots?|places?|seats?|units?)\b/gi },
+    { k: "urgency", p: 6, re: /\b(?:offer|sale|deal|price|pricing|special)\s+(?:ends|closes|expires)\b(?:\s+(?:today|tonight|tomorrow|midnight|soon|this \w+|on \w+|sunday|monday|tuesday|wednesday|thursday|friday|saturday))?/gi },
+    { k: "urgency", p: 5, re: /\bends\s+(?:today|tonight|tomorrow|midnight|soon|sunday|monday|tuesday|wednesday|thursday|friday|saturday|this (?:week|weekend))\b/gi },
+    { k: "urgency", p: 5, re: /\b(?:\d+|two|three|four|five|seven)\s+days?\s+only\b|\b(?:today|this weekend|this week)\s+only\b|\b(?:hurry|act now|don'?t miss out|last chance|selling fast|almost gone|while stocks last|limited[- ]time|limited offer|limited stock|limited release)\b/gi },
+    { k: "urgency", p: 5, re: /\bpre-?(?:christmas|xmas|eofy|launch|release|easter)\s+(?:pricing|prices?|offer|sale|special)\b/gi },
+    { k: "urgency", p: 4, re: /\b(?:book|buy|order|sign up|act)\s+(?:this week|today|now)\b/gi },
+    { k: "urgency", p: 4, re: /\b(?:expressions of interest|eois?|offers)\s+close\s+\w+/gi },
+    { k: "urgency", p: 4, re: /\bunless sold prior\b|\bwill sell before\b/gi },
+    { k: "social", p: 6, re: /\b(?:join|trusted by|used by|loved by|chosen by)\s+(?:over\s+|more than\s+)?[\d,]+\s?(?:k)?\+?\s*(?:\w+\s+)?(?:customers|teams|users|clients|families|businesses|people|members|australians|homes)\b/gi },
+    { k: "social", p: 5, re: /\b(?:thousands|hundreds|millions)\s+of\s+(?:happy\s+|satisfied\s+)?(?:customers|teams|users|clients|families|businesses|people|australians)\b/gi },
+    { k: "social", p: 5, re: /(?:\b(?:australia|adelaide|sa)'?s\s+)#1\b(?:\s+\w+)?|\b(?:number one|best[- ]selling|award[- ]winning)\b/gi },
+    { k: "social", p: 4, re: /\b(?:extensive|strong|huge|overwhelming|unprecedented)\s+(?:interest|demand)\b/gi },
+    { k: "authority", p: 6, re: /\b(?:studies|research|experts|scientists|doctors|dentists|surveys?)\s+(?:shows?|proves?|says?|agrees?|recommends?|confirms?|finds?|found)\b/gi },
+    { k: "authority", p: 6, re: /\b(?:independent|clinical|scientific)\s+(?:research|studies|tests?|trials?)\b(?:\s+(?:shows?|proves?|found|confirms?))?/gi },
+    { k: "authority", p: 6, re: /\b(?:clinically|scientifically|independently)\s+(?:proven|tested|shown)\b/gi },
+    { k: "authority", p: 6, re: /\b\d+\s?%\s+of\s+(?:doctors|dentists|experts|vets|users)\b/gi },
+    { k: "relative", p: 5, re: new RegExp("\\b(?:cuts?|reduces?|lowers?|slashes?|boosts?|increases?|improves?|doubles?)\\s+(?:your\\s+)?(?:[\\w-]+\\s+){0,2}?(?:by\\s+)?(?:up to\\s+)?" + PCT, "gi") },
+    { k: "relative", p: 5, re: new RegExp("\\b" + PCT + "\\s+(?:more|less|fewer|lower|higher|faster|cheaper)\\b", "gi") },
+    { k: "relative", p: 5, re: /\b\d+\s?x\s+(?:more|faster|cheaper|better)\b/gi },
+    { k: "loss", p: 5, re: /\b(?:losing|wasting|leaving)\s+(?:\$[\d,]+|money|customers|sales|leads|clients|hours)\b(?:\s+(?:every|each|a)\s+(?:day|week|month))?/gi },
+    { k: "loss", p: 5, re: /\b(?:stop|don'?t)\s+(?:wasting|losing|missing out on)\b/gi },
+    { k: "loaded", p: 4, re: new RegExp("\\b(?:only|just)\\s+" + MONEY, "gi") },
+    { k: "loaded", p: 3, re: /\b(?:a steal|bargain|no-brainer|unbeatable|rarely offered|tightly held|once[- ]in[- ]a[- ]lifetime|mega clearance)\b/gi },
+    { k: "omission", p: 4, re: /(?<=[\w$%)])\*(?=[\s.,;:!)]|$)/g },
+    { k: "omission", p: 4, re: /\b(?:conditions apply|t&cs apply|terms(?: and conditions)? apply|approved applicants|fees apply|by others)\b/gi },
+    { k: "omission", p: 3, re: /\bexcludes?\b[^.\n]{0,60}\b/gi },
+  ];
+
+  var PER = { week: [52, "52 weeks"], wk: [52, "52 weeks"], fortnight: [26, "26 fortnights"], day: [365, "365 days"] };
+
+  function toNum(s) { return parseFloat(String(s).replace(/,/g, "")); }
+
+  function formatMoney(n) {
+    var r = Math.round(n * 100) / 100;
+    var whole = Math.floor(r);
+    var cents = Math.round((r - whole) * 100);
+    var s = String(whole).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return "$" + s + (cents ? "." + String(cents).padStart(2, "0") : "");
+  }
+
+  function totalOverTerm(maths, years) {
+    if (!maths || !(years > 0)) return null;
+    return Math.round(maths.perYear * years * 100) / 100;
+  }
+
+  function lineOf(text, idx) {
+    var n = 1;
+    for (var i = 0; i < idx; i++) if (text.charCodeAt(i) === 10) n++;
+    return n;
+  }
+
+  function termHint(text) {
+    var best = null, m;
+    var y = /\b(\d{1,2})[- ]?(?:years?|yrs?)\b/gi;
+    while ((m = y.exec(text))) { var v = +m[1]; if (v > 0 && (best === null || v > best)) best = v; }
+    if (best !== null) return best;
+    var mo = /\b(\d{1,3})[- ]?months?\b/gi;
+    while ((m = mo.exec(text))) { if (+m[1] < 6) continue; var w = Math.round(+m[1] / 12 * 100) / 100; if (best === null || w > best) best = w; }
+    return best;
+  }
+
+  function scan(text) {
+    text = String(text || "");
+    var cands = [];
+    DETECTORS.forEach(function (d) {
+      d.re.lastIndex = 0;
+      var m;
+      while ((m = d.re.exec(text))) {
+        if (!m[0].trim()) { d.re.lastIndex++; continue; }
+        var quote = m[0].replace(/\s+$/, "");
+        var c = { frame: FRAMES[d.k], key: d.k, quote: quote, start: m.index, end: m.index + quote.length, p: d.p, flip: FLIPS[d.k] };
+        if (d.maths) {
+          var amt = toNum(m[1]), unit = m[2].toLowerCase(), per = PER[unit];
+          var perYear = Math.round(amt * per[0] * 100) / 100;
+          c.maths = { amount: amt, unit: unit, perYear: perYear, note: formatMoney(perYear) + " per year (" + per[1] + " assumed — enter the term for the total)" };
+        }
+        cands.push(c);
+      }
+    });
+    cands.sort(function (a, b) { return b.p - a.p || (b.end - b.start) - (a.end - a.start) || a.start - b.start; });
+    var kept = [];
+    cands.forEach(function (c) {
+      for (var i = 0; i < kept.length; i++) if (c.start < kept[i].end && kept[i].start < c.end) return;
+      kept.push(c);
+    });
+    kept.sort(function (a, b) { return a.start - b.start; });
+    kept.forEach(function (c) { c.line = lineOf(text, c.start); delete c.p; });
+    return { text: text, findings: kept, termHint: termHint(text) };
+  }
+
+  function agentPrompt(result) {
+    var lines = result.text.split("\n");
+    var pad = String(lines.length).length;
+    var out = "Use the frame-check skill in IN mode on the text below. A pattern checker flagged these first; check each one, and look for anything it missed:\n";
+    result.findings.forEach(function (f) { out += "- L" + f.line + " \"" + f.quote + "\" (" + f.frame + ")\n"; });
+    if (!result.findings.length) out += "- (nothing flagged by pattern)\n";
+    out += "\nText:\n";
+    lines.forEach(function (l, i) { out += String(i + 1).padStart(pad, " ") + "  " + l + "\n"; });
+    return out;
+  }
+
+  var api = { scan: scan, agentPrompt: agentPrompt, formatMoney: formatMoney, totalOverTerm: totalOverTerm, FRAMES: FRAMES, FLIPS: FLIPS };
+  if (typeof module === "object" && module.exports) module.exports = api;
+  else root.FrameCheck = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var FC = window.FrameCheck;
+  var $ = function (id) { return document.getElementById(id); };
+  var input = $("input"), summary = $("summary"), rendered = $("rendered"), list = $("findings"), actions = $("actions");
+  var last = null;
+  var EXAMPLE = "MEGA CLEARANCE — 4 DAYS ONLY!\n3-seater leather lounge. Was $3,999. NOW $1,499!\nSave $2,500 — that's over 60% off.\nOr just $15 a week with 0% interest for 24 months*. No deposit.\nAustralia's #1 leather lounge — loved by over 50,000 families.\nOnly 6 left in store. Sale ends Sunday.\n\n*Approved applicants. $49 account fee and $9.95 monthly fee apply. 0% for 24 months, then 29.99% p.a.";
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function render() {
+    var r = FC.scan(input.value);
+    last = r;
+    list.innerHTML = "";
+    if (!input.value.trim()) {
+      summary.textContent = "Nothing yet. Paste something on the left.";
+      summary.className = "empty"; rendered.innerHTML = ""; actions.hidden = true; return;
+    }
+    var n = r.findings.length;
+    var lines = {}; r.findings.forEach(function (f) { lines[f.line] = 1; });
+    summary.className = n ? "" : "empty";
+    summary.textContent = n
+      ? n + (n === 1 ? " frame" : " frames") + " on " + Object.keys(lines).length + (Object.keys(lines).length === 1 ? " line." : " lines.")
+      : "No surface frames found. That doesn't make it a fair deal — ask the skill for a full read.";
+    var html = "", pos = 0;
+    r.findings.forEach(function (f, i) {
+      html += esc(r.text.slice(pos, f.start)) + '<mark title="' + esc(f.frame) + '">' + esc(f.quote) + "<sup>" + (i + 1) + "</sup></mark>";
+      pos = f.end;
+    });
+    rendered.innerHTML = html + esc(r.text.slice(pos));
+    r.findings.forEach(function (f, i) {
+      var li = document.createElement("li");
+      var h = '<div class="fhead"><span class="num">' + (i + 1) + '</span><span class="frame">' + esc(f.frame) + '</span><span class="where">line ' + f.line + "</span></div>" +
+        '<p class="quote">“' + esc(f.quote === "*" ? "* (an asterisk)" : f.quote) + '”</p><p class="flip">' + esc(f.flip) + "</p>";
+      if (f.maths) {
+        var id = "term" + i;
+        h += '<div class="maths"><div>' + esc(f.maths.note) + "</div>" +
+          '<label for="' + id + '">Term in years <input id="' + id + '" type="number" min="0" step="0.5" inputmode="decimal" data-i="' + i + '"></label>' +
+          (r.termHint ? '<button type="button" class="hint" data-i="' + i + '" data-t="' + r.termHint + '">The text mentions ' + r.termHint + (r.termHint === 1 ? " year" : " years") + " — use it</button>" : "") +
+          '<div class="total" id="total' + i + '" aria-live="polite"></div></div>';
+      }
+      li.innerHTML = h;
+      list.appendChild(li);
+    });
+    actions.hidden = false;
+  }
+
+  function setTotal(i, years) {
+    var f = last && last.findings[i]; if (!f) return;
+    var t = FC.totalOverTerm(f.maths, years);
+    $("total" + i).textContent = t === null ? "" : FC.formatMoney(t) + " over " + years + (years === 1 ? " year" : " years") + " (" + FC.formatMoney(f.maths.amount) + " a " + f.maths.unit + ")";
+  }
+
+  var timer;
+  input.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(render, 120); });
+  list.addEventListener("input", function (e) { if (e.target.matches("input[data-i]")) setTotal(+e.target.dataset.i, parseFloat(e.target.value)); });
+  list.addEventListener("click", function (e) {
+    var b = e.target.closest("button.hint"); if (!b) return;
+    var inp = $("term" + b.dataset.i); inp.value = b.dataset.t; setTotal(+b.dataset.i, parseFloat(b.dataset.t));
+  });
+  $("example").addEventListener("click", function () { input.value = EXAMPLE; render(); input.focus(); });
+  $("clear").addEventListener("click", function () { input.value = ""; render(); input.focus(); });
+  $("copy").addEventListener("click", function () {
+    var text = FC.agentPrompt(last), btn = this;
+    function done() { btn.textContent = "Copied — paste it into your agent"; setTimeout(function () { btn.textContent = "Copy a prompt for your agent"; }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    function fallback() { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

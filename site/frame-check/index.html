@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frame Check — know the catch, don't be one</title>
+<meta name="description" content="Frame Check is a free Agent Skill and browser checker that names the words doing the persuading: in their offer before you sign, and in your pitch before you send. Ten frames, one honesty gate, three verdicts.">
+<link rel="canonical" href="https://blueprintau.com/frame-check/">
+<meta property="og:title" content="Frame Check — know the catch, don't be one">
+<meta property="og:description" content="A free Agent Skill and browser checker: see the frames in their offer, and write yours honestly.">
+<meta property="og:url" content="https://blueprintau.com/frame-check/">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Frame Check","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"},"license":"https://opensource.org/licenses/MIT","url":"https://blueprintau.com/frame-check/","codeRepository":"https://github.com/aldohushi1-stack/frame-check","author":{"@type":"Person","name":"Aldo Hushi","url":"https://www.linkedin.com/in/aldohushi"},"publisher":{"@type":"Organization","name":"BlueprintAU","url":"https://blueprintau.com"},"description":"An Agent Skill that checks the framing of persuasive text both ways — what's the catch in an offer, and an honest frame for your own pitch — plus a browser checker that runs offline."}
+</script>
+<style>
+@font-face{font-family:"Inter";font-weight:400;font-display:swap;src:url(/glassbox/fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;font-display:swap;src:url(/glassbox/fonts/inter-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:800;font-display:swap;src:url(/glassbox/fonts/inter-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-weight:400;font-display:swap;src:url(/glassbox/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+:root{--paper:#F8FAFC;--card:#FFFFFF;--ink:#0F172A;--ink-2:#334155;--ink-3:#64748B;--line:#E2E8F0;--muted:#F1F5F9;--accent:#EA580C;--accent-ink:#C2410C;--accent-soft:#FFF1E8;--mark:#FED7AA;
+--sans:'Inter','SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--sans)}
+a{color:var(--accent-ink)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+nav.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0}
+.brand{font-weight:800;text-decoration:none;color:var(--ink);letter-spacing:-.01em}
+.brand span{color:var(--accent)}
+nav.top .links{display:flex;gap:16px;font-size:15px;flex-wrap:wrap}
+nav.top .links a{color:var(--ink-2);text-decoration:none}
+.hero{padding:40px 0 28px}
+.eyebrow{font:600 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent-ink);margin:0 0 16px}
+h1{font-size:clamp(38px,7.5vw,72px);line-height:1.02;letter-spacing:-.035em;margin:0 0 18px;font-weight:800}
+.sub{font-size:clamp(18px,2.3vw,21px);color:var(--ink-2);max-width:40ch;margin:0}
+.doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:34px 0 8px}
+@media (max-width:760px){.doors{grid-template-columns:minmax(0,1fr)}}
+.door{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.door h2{margin:0;font-size:24px;letter-spacing:-.02em}
+.door p{margin:0;color:var(--ink-2)}
+.door .who{font:600 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 16px/1 var(--sans);border-radius:999px;padding:14px 20px;text-decoration:none;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;min-height:48px;align-self:flex-start}
+.btn:hover{background:#1E293B}
+.install{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--ink);min-width:0}
+.install code{flex:1;min-width:0;color:#F8FAFC;font:14px/1.5 var(--mono);padding:12px 14px;overflow-wrap:anywhere}
+.install button{border:0;border-left:1px solid #334155;background:#1E293B;color:#fff;font:600 14px/1 var(--sans);padding:0 16px;cursor:pointer;min-width:84px}
+.small{font-size:14px;color:var(--ink-3)}
+section{padding:44px 0;border-top:1px solid var(--line)}
+section h2.h{font-size:clamp(26px,4vw,36px);letter-spacing:-.025em;line-height:1.15;margin:0 0 10px}
+section .lead{color:var(--ink-2);max-width:60ch;margin:0 0 22px}
+.run{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.run{grid-template-columns:minmax(0,1fr)}}
+.pane{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.pane h3{margin:0 0 10px;font:600 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.pane pre{margin:0;white-space:pre-wrap;font:15px/1.6 var(--sans);color:var(--ink);overflow-wrap:anywhere}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
+.verdict{display:inline-block;font:600 13px/1 var(--mono);background:var(--accent-soft);color:var(--accent-ink);border-radius:999px;padding:7px 11px;margin-bottom:10px}
+.pane ul{margin:0;padding-left:18px}
+.pane li{margin:6px 0}
+.tbl{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:15px}
+.tbl th,.tbl td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{background:var(--muted);font-weight:600;font-size:13px;color:var(--ink-2)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{font-weight:600;white-space:nowrap}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px}
+@media (max-width:640px){.tbl.frames td:nth-child(2),.tbl.frames th:nth-child(2){display:none}.tbl td:first-child{white-space:normal}}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.stats{grid-template-columns:minmax(0,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.stat b{display:block;font-size:34px;letter-spacing:-.03em;line-height:1.1}
+.stat span{color:var(--ink-2);font-size:15px}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+summary{font-weight:600;cursor:pointer}
+details p{margin:10px 0 0;color:var(--ink-2)}
+.coffee{background:var(--ink);color:#F8FAFC;border-radius:20px;padding:30px 24px;margin:8px 0 0}
+.coffee h2{margin:0 0 8px;font-size:clamp(24px,3.5vw,32px);letter-spacing:-.02em}
+.coffee p{margin:0 0 16px;color:#CBD5E1;max-width:56ch}
+.coffee .btn{background:var(--accent);border-color:var(--accent)}
+footer{padding:28px 0 48px;color:var(--ink-3);font-size:14px;border-top:1px solid var(--line);margin-top:44px}
+code.i{font-family:var(--mono);font-size:.9em;background:var(--muted);padding:1px 6px;border-radius:5px;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top" aria-label="Site">
+    <a class="brand" href="/">Blueprint<span>AU</span></a>
+    <div class="links"><a href="app/">What's the catch?</a><a href="#install">Install</a><a href="https://github.com/aldohushi1-stack/frame-check">GitHub</a></div>
+  </nav>
+
+  <header class="hero">
+    <p class="eyebrow">Frame Check · free and open source</p>
+    <h1>Know the catch.<br>Don't be one.</h1>
+    <p class="sub">Every offer is worded by someone who wants a yes. Frame Check names the words doing the persuading — in theirs before you sign, and in yours before you send.</p>
+
+    <div class="doors">
+      <div class="door">
+        <span class="who">Reading it?</span>
+        <h2>Paste the offer. See the catch.</h2>
+        <p>An ad, a quote, a listing, a pricing page. The frames light up, each with the question it would rather you didn't ask, and the weekly price is turned into a total. Nothing you paste leaves your browser.</p>
+        <a class="btn" href="app/" id="open-app">What's the catch? →</a>
+      </div>
+      <div class="door" id="install">
+        <span class="who">Writing it?</span>
+        <h2>Frame your pitch honestly.</h2>
+        <p>Install the skill in Claude Code, Codex or any agent that reads Agent Skills. Say <em>frame this</em> on your email, post or pricing page: you get honest rewrites, and the lines that fail the honesty gate are shown, not hidden.</p>
+        <div class="install"><code id="cmd">npx skills add aldohushi1-stack/frame-check -a claude-code -y</code><button type="button" id="copy-install" aria-label="Copy the install command">Copy</button></div>
+        <p class="small">Codex: <code class="i">-a codex</code> · every agent found: <code class="i">-a '*'</code></p>
+      </div>
+    </div>
+  </header>
+
+  <section aria-labelledby="run-h">
+    <h2 class="h" id="run-h">One sofa ad, start to finish.</h2>
+    <p class="lead">What the skill says when you paste an ad and ask "is this a good deal?" — taken from a real run, unedited except for length. The ad is a composite written for the test, not a real retailer.</p>
+    <div class="run">
+      <div class="pane">
+        <h3>The ad</h3>
+<pre><mark>MEGA CLEARANCE</mark> — <mark>4 DAYS ONLY</mark>!
+3-seater leather lounge. <mark>Was $3,999</mark>. NOW $1,499!
+<mark>Save $2,500</mark> — that's over <mark>60% off</mark>.
+Or <mark>just $15 a week</mark> with 0% interest for 24 months<mark>*</mark>.
+<mark>Australia's #1</mark> leather lounge — <mark>loved by over 50,000 families</mark>.
+<mark>Only 6 left</mark> in store. <mark>Sale ends Sunday</mark>.
+
+*Approved applicants. $49 account fee and $9.95 monthly fee apply. 0% for 24 months, then 29.99% p.a.</pre>
+      </div>
+      <div class="pane">
+        <h3>Frame Check</h3>
+        <span class="verdict">Verdict: Pushy but true</span>
+        <ul>
+          <li><b>Omission.</b> "0% interest isn't 0% cost." Paid as advertised, finance comes to <b>about $1,848</b> against $1,499 cash — roughly $290–$350 in fees.</li>
+          <li><b>Anchor.</b> "The maths is right (2,500 ÷ 3,999 = 62.5%), but the 'was' price is the claim to test."</li>
+          <li><b>The question to ask:</b> "How many were sold at $3,999 in the last 6 months?"</li>
+          <li><b>The line:</b> "It would tip into misleading if the lounge was never really sold at $3,999."</li>
+        </ul>
+        <p class="small" style="margin-top:12px"><a href="https://github.com/aldohushi1-stack/frame-check/tree/main/samples/02-furniture-sale">Read the full reply →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="frames-h">
+    <h2 class="h" id="frames-h">Ten frames. One question each.</h2>
+    <p class="lead">Words edit what people remember and what they choose — Loftus &amp; Palmer showed it in 1974 with one verb, "smashed" against "hit". These are the ten frames Frame Check names, and the flip that takes the shine off.</p>
+    <div class="scroll">
+    <table class="tbl frames">
+      <thead><tr><th>Frame</th><th>Looks like</th><th>The question</th></tr></thead>
+      <tbody>
+        <tr><td>Gain vs loss</td><td>"you're losing customers every day"</td><td>Told the other way, is it still true for you?</td></tr>
+        <tr><td>Relative vs absolute</td><td>"cuts your risk by 20%"</td><td>From what starting number?</td></tr>
+        <tr><td>Small unit</td><td>"$15 a week", "less than a coffee a day"</td><td>What's the total over the full term?</td></tr>
+        <tr><td>"Up to" / "from"</td><td>"save up to $400", "from $99"</td><td>What does a typical person get?</td></tr>
+        <tr><td>Anchor</td><td>"was $3,999, now $1,499"</td><td>Did anyone ever pay the first price?</td></tr>
+        <tr><td>Urgency / scarcity</td><td>"only 3 left", "ends Sunday"</td><td>What actually happens if you wait?</td></tr>
+        <tr><td>Social proof</td><td>"loved by 50,000 families"</td><td>How many, named, and checkable?</td></tr>
+        <tr><td>Loaded words</td><td>"rarely offered", "investment"</td><td>What's the plainest word for it?</td></tr>
+        <tr><td>Omission / default</td><td>the asterisk, the fine print</td><td>What's missing from the headline?</td></tr>
+        <tr><td>Authority</td><td>"studies show", "experts say"</td><td>Which study, how many people, who paid?</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small" style="margin-top:14px">When you're the one writing, every frame also has to pass four questions: <b>True?</b> <b>Survives daylight?</b> <b>Serves them too?</b> <b>Leaves the past alone?</b> Fail one and it's marked REJECTED, with the reason.</p>
+  </section>
+
+  <section aria-labelledby="samples-h">
+    <h2 class="h" id="samples-h">Five runs, five verdicts.</h2>
+    <p class="lead">Each one run through the skill as installed above, in a clean agent with none of our own settings. The texts are composites written for the test — we'd rather show the frames than name a trader.</p>
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Sample</th><th>Verdict</th><th>The catch</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://github.com/aldohushi1-stack/frame-check/tree/main/samples/01-auction-listing">Auction listing</a></td><td>Pushy but true</td><td>The price guide is a floor $310k below the comparables it quotes.</td></tr>
+        <tr><td><a href="https://github.com/aldohushi1-stack/frame-check/tree/main/samples/02-furniture-sale">Sofa sale</a></td><td>Pushy but true</td><td>"0% interest" costs about $290–$350 in fees.</td></tr>
+        <tr><td><a href="https://github.com/aldohushi1-stack/frame-check/tree/main/samples/03-bathroom-quote">Bathroom quote</a></td><td>Misleading</td><td>The headline price leaves out plumbing, electrical, rubbish and rot.</td></tr>
+        <tr><td><a href="https://github.com/aldohushi1-stack/frame-check/tree/main/samples/04-cold-pitch">Cold pitch (yours)</a></td><td>Rewritten</td><td>Four claims fail the honesty gate; three honest rewrites.</td></tr>
+        <tr><td><a href="https://github.com/aldohushi1-stack/frame-check/tree/main/samples/05-pricing-page">Pricing page (yours)</a></td><td>Rewritten</td><td>8c SMS reminders can nearly double the cheapest plan.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="tested-h">
+    <h2 class="h" id="tested-h">Tested before it shipped.</h2>
+    <p class="lead">A skill is only useful if the agent picks it up when it should, and leaves it alone when it shouldn't. So we checked, in a clean agent, and put the method and the outputs <a href="https://github.com/aldohushi1-stack/frame-check/tree/main/spike">in the repo</a>.</p>
+    <div class="stats">
+      <div class="stat"><b>9 of 9</b><span>runs where it should load — it did, every time</span></div>
+      <div class="stat"><b>0 of 6</b><span>runs where it shouldn't — fixing a typo, summarising — it stayed out</span></div>
+      <div class="stat"><b>Fair, 3 of 3</b><span>on an honest bike-shop price list — it doesn't cry wolf</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="faq-h">
+    <h2 class="h" id="faq-h">Questions</h2>
+    <details><summary>Is this a lie detector?</summary><p>No. A frame is a choice of words, not proof of intent. Plenty of honest sellers say "from $99". The verdict is about one thing: whether seeing the flip would change your decision.</p></details>
+    <details><summary>Is it legal advice?</summary><p>No. It won't tell you whether a claim breaks consumer law. It tells you which question to ask before you sign.</p></details>
+    <details><summary>Does my text go anywhere?</summary><p>The checker runs entirely in your browser — it makes no network requests once the page has loaded, and the repo has a test that fails if it ever does. The skill runs inside your own agent, so your text goes wherever your agent already sends it, and nowhere else.</p></details>
+    <details><summary>Why are there two parts?</summary><p>The checker is for the moment you're holding an offer and want a quick look. The skill is for the full read — the maths, the questions to ask, the verdict — and for writing your own words honestly.</p></details>
+    <details><summary>Can I make it follow my own rules?</summary><p>Yes. Copy <code class="i">house-rules.example.md</code> to <code class="i">house-rules.md</code> beside the skill and add your standing rules: your voice, your channels, the kind of ask you prefer.</p></details>
+    <details><summary>What does it cost?</summary><p>Nothing. It's MIT-licensed on <a href="https://github.com/aldohushi1-stack/frame-check">GitHub</a>.</p></details>
+  </section>
+
+  <div class="coffee">
+    <h2>Want it tuned to how your business sells?</h2>
+    <p>House rules for your team, your pricing page checked line by line, your quotes made clearer than the next tradie's. It's easier over a coffee in Adelaide than over email.</p>
+    <a class="btn" href="mailto:hi@blueprintau.com?subject=Frame%20Check%20%E2%80%94%20coffee">Book the coffee →</a>
+  </div>
+
+  <footer>
+    Frame Check by Aldo Hushi, Adelaide · <a href="https://blueprintau.com">BlueprintAU</a> · <a href="https://github.com/aldohushi1-stack/frame-check">GitHub</a> · MIT licence.
+    Built on Loftus &amp; Palmer (1974), Loftus &amp; Pickrell (1995) and Tversky &amp; Kahneman (1981).
+  </footer>
+</div>
+<script>
+(function () {
+  function count(path, title) { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: path, title: title, event: true }); } catch (e) {} }
+  var btn = document.getElementById("copy-install"), cmd = document.getElementById("cmd").textContent;
+  btn.addEventListener("click", function () {
+    function done() { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 2000); }
+    count("frame-check-copy-install", "Frame Check: copy install");
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(cmd).then(done, fb); else fb();
+    function fb() { var t = document.createElement("textarea"); t.value = cmd; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+  });
+  document.getElementById("open-app").addEventListener("click", function () { count("frame-check-open-app", "Frame Check: open app"); });
+})();
+</script>
+<script data-goatcounter="https://blueprintau.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

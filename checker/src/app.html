@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's the catch? — Frame Check</title>
+<meta name="description" content="Paste an offer, ad, quote or listing. See the frames — the words doing the persuading — and the question each one hides. Runs in your browser; nothing leaves the page.">
+<meta name="color-scheme" content="light">
+<style>
+:root{--paper:#F8FAFC;--card:#FFFFFF;--ink:#0F172A;--ink-2:#334155;--ink-3:#64748B;--line:#E2E8F0;--muted:#F1F5F9;--accent:#EA580C;--accent-ink:#C2410C;--accent-soft:#FFF1E8;--mark:#FED7AA;
+--sans:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;--mono:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+a{color:var(--accent-ink)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.brand{font-weight:700;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--accent)}
+.privacy{font-size:13px;color:var(--ink-3)}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;letter-spacing:-.02em;margin:0 0 8px}
+.lede{color:var(--ink-2);margin:0 0 20px;max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (min-width:861px){.grid>section:first-child{position:sticky;top:16px}}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+label.lbl{display:block;font-weight:600;font-size:14px;margin-bottom:8px}
+textarea{width:100%;min-height:220px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:12px;font:15px/1.55 var(--sans);color:var(--ink);background:#fff}
+textarea:focus,button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--mark);outline-offset:2px;border-color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{font:600 14px/1 var(--sans);border-radius:999px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;min-height:40px}
+button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+button:hover{border-color:var(--ink-3)}
+#summary{font-weight:600;margin:0 0 10px}
+#rendered{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--muted);border-radius:10px;padding:12px;font-size:15px;margin-bottom:14px;max-height:340px;overflow:auto}
+#rendered:empty{display:none}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+mark sup{font:700 10px/1 var(--mono);color:var(--accent-ink);margin-left:2px}
+ol#findings{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+ol#findings li{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:10px 12px;background:#fff}
+.fhead{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.num{font:700 12px/1 var(--mono);color:var(--accent-ink)}
+.frame{font-weight:700}
+.where{font:12px/1 var(--mono);color:var(--ink-3)}
+.quote{margin:4px 0;color:var(--ink-2);overflow-wrap:anywhere}
+.flip{margin:0;font-weight:600}
+.maths{margin-top:8px;padding:8px 10px;background:var(--accent-soft);border-radius:8px;font-size:14px}
+.maths label{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:14px}
+.maths input{width:5.5em;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.total{font-weight:700}
+.hint{margin-left:6px;font-size:13px;padding:6px 10px;min-height:32px}
+.empty{color:var(--ink-3)}
+.note{font-size:13px;color:var(--ink-3);margin-top:14px}
+footer{margin-top:28px;font-size:14px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+code{font-family:var(--mono);font-size:.92em;background:var(--muted);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="../">Frame <span>Check</span></a>
+    <span class="privacy">Runs in your browser. Nothing you paste leaves this page.</span>
+  </header>
+
+  <h1>What's the catch?</h1>
+  <p class="lede">Paste an offer, ad, quote or listing. The words doing the persuading light up, each with the question it would rather you didn't ask.</p>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="in-lbl">
+      <label class="lbl" id="in-lbl" for="input">The text</label>
+      <textarea id="input" spellcheck="false" placeholder="Paste the ad, quote, listing or pricing page here…"></textarea>
+      <div class="row">
+        <button type="button" id="example">Try an example</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <p class="note">This finds surface patterns only — "up to", "only 3 left", "$15 a week". The subtle ones, and the verdict, are the <a href="../#install">Frame Check skill</a>'s job.</p>
+    </section>
+
+    <section class="card" aria-labelledby="out-lbl">
+      <h2 class="lbl" id="out-lbl" style="margin:0 0 8px">The frames</h2>
+      <p id="summary" aria-live="polite" class="empty">Nothing yet. Paste something on the left.</p>
+      <div id="rendered" aria-label="Your text with the frames marked"></div>
+      <ol id="findings"></ol>
+      <div class="row" id="actions" hidden>
+        <button type="button" class="primary" id="copy">Copy a prompt for your agent</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Frame Check is free and open source (MIT) — <a href="https://github.com/aldohushi1-stack/frame-check">github.com/aldohushi1-stack/frame-check</a>.
+    Not a lie detector, not legal advice: a frame is a choice of words, not proof of intent.
+    Made in Adelaide by Aldo Hushi · <a href="https://blueprintau.com">BlueprintAU</a>
+  </footer>
+</div>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+(function () {
+  "use strict";
+  var FC = window.FrameCheck;
+  var $ = function (id) { return document.getElementById(id); };
+  var input = $("input"), summary = $("summary"), rendered = $("rendered"), list = $("findings"), actions = $("actions");
+  var last = null;
+  var EXAMPLE = "MEGA CLEARANCE — 4 DAYS ONLY!\n3-seater leather lounge. Was $3,999. NOW $1,499!\nSave $2,500 — that's over 60% off.\nOr just $15 a week with 0% interest for 24 months*. No deposit.\nAustralia's #1 leather lounge — loved by over 50,000 families.\nOnly 6 left in store. Sale ends Sunday.\n\n*Approved applicants. $49 account fee and $9.95 monthly fee apply. 0% for 24 months, then 29.99% p.a.";
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function render() {
+    var r = FC.scan(input.value);
+    last = r;
+    list.innerHTML = "";
+    if (!input.value.trim()) {
+      summary.textContent = "Nothing yet. Paste something on the left.";
+      summary.className = "empty"; rendered.innerHTML = ""; actions.hidden = true; return;
+    }
+    var n = r.findings.length;
+    var lines = {}; r.findings.forEach(function (f) { lines[f.line] = 1; });
+    summary.className = n ? "" : "empty";
+    summary.textContent = n
+      ? n + (n === 1 ? " frame" : " frames") + " on " + Object.keys(lines).length + (Object.keys(lines).length === 1 ? " line." : " lines.")
+      : "No surface frames found. That doesn't make it a fair deal — ask the skill for a full read.";
+    var html = "", pos = 0;
+    r.findings.forEach(function (f, i) {
+      html += esc(r.text.slice(pos, f.start)) + '<mark title="' + esc(f.frame) + '">' + esc(f.quote) + "<sup>" + (i + 1) + "</sup></mark>";
+      pos = f.end;
+    });
+    rendered.innerHTML = html + esc(r.text.slice(pos));
+    r.findings.forEach(function (f, i) {
+      var li = document.createElement("li");
+      var h = '<div class="fhead"><span class="num">' + (i + 1) + '</span><span class="frame">' + esc(f.frame) + '</span><span class="where">line ' + f.line + "</span></div>" +
+        '<p class="quote">“' + esc(f.quote === "*" ? "* (an asterisk)" : f.quote) + '”</p><p class="flip">' + esc(f.flip) + "</p>";
+      if (f.maths) {
+        var id = "term" + i;
+        h += '<div class="maths"><div>' + esc(f.maths.note) + "</div>" +
+          '<label for="' + id + '">Term in years <input id="' + id + '" type="number" min="0" step="0.5" inputmode="decimal" data-i="' + i + '"></label>' +
+          (r.termHint ? '<button type="button" class="hint" data-i="' + i + '" data-t="' + r.termHint + '">The text mentions ' + r.termHint + (r.termHint === 1 ? " year" : " years") + " — use it</button>" : "") +
+          '<div class="total" id="total' + i + '" aria-live="polite"></div></div>';
+      }
+      li.innerHTML = h;
+      list.appendChild(li);
+    });
+    actions.hidden = false;
+  }
+
+  function setTotal(i, years) {
+    var f = last && last.findings[i]; if (!f) return;
+    var t = FC.totalOverTerm(f.maths, years);
+    $("total" + i).textContent = t === null ? "" : FC.formatMoney(t) + " over " + years + (years === 1 ? " year" : " years") + " (" + FC.formatMoney(f.maths.amount) + " a " + f.maths.unit + ")";
+  }
+
+  var timer;
+  input.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(render, 120); });
+  list.addEventListener("input", function (e) { if (e.target.matches("input[data-i]")) setTotal(+e.target.dataset.i, parseFloat(e.target.value)); });
+  list.addEventListener("click", function (e) {
+    var b = e.target.closest("button.hint"); if (!b) return;
+    var inp = $("term" + b.dataset.i); inp.value = b.dataset.t; setTotal(+b.dataset.i, parseFloat(b.dataset.t));
+  });
+  $("example").addEventListener("click", function () { input.value = EXAMPLE; render(); input.focus(); });
+  $("clear").addEventListener("click", function () { input.value = ""; render(); input.focus(); });
+  $("copy").addEventListener("click", function () {
+    var text = FC.agentPrompt(last), btn = this;
+    function done() { btn.textContent = "Copied — paste it into your agent"; setTimeout(function () { btn.textContent = "Copy a prompt for your agent"; }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    function fallback() { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) {} t.remove(); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

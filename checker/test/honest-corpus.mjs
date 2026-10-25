@@ -1,0 +1,25 @@
+// Twenty honest texts that use the checker's trigger words plainly: from, only, save, up to,
+// studies, limited, ends, join, $… a month. None should raise a finding (the bar is at most 1 of 20).
+// Written before the engine, so the engine is fitted to them, not the other way round.
+export const HONEST = [
+  "Café Lido — open from 7am to 3pm, Monday to Friday. Only 3 ingredients in our famous banana bread: banana, flour and honey.",
+  "Please save your receipt. Returns accepted within 30 days with proof of purchase.",
+  "Tables seat up to 4 people. For bookings of 6 or more, please call ahead on the number below.",
+  "The Adelaide Studies Centre runs evening classes in German, French and Hungarian from February.",
+  "Bus 110 runs from the city to Henley Beach every 15 minutes until 7pm, then every 30 minutes until midnight.",
+  "Haircut $35. Cut and blow-dry $55. Colour $120. Prices include GST.",
+  "Swimming lessons, Term 4: 10 weeks, $180. Classes are limited to 6 children per instructor for safety.",
+  "Car service: $249 for a logbook service on most sedans. We will call you before doing any work that costs extra.",
+  "The library is closed on public holidays. Late fees were removed in 2024.",
+  "Our plumber charges $120 per hour, billed in 15-minute blocks after the first hour.",
+  "Parking: 2-hour limit from 8am to 6pm on weekdays. Free on weekends.",
+  "Join us for the club AGM on Thursday at 7pm in the clubrooms. Supper provided.",
+  "Phone plan: $35 a month, 40GB data, unlimited calls and texts in Australia. No lock-in contract.",
+  "Ingredients: wheat flour, water, salt, yeast. Made from Australian-grown wheat.",
+  "The sale of the old clubrooms ends a long chapter for the club, which moved there in 1962.",
+  "Electricity usage this quarter: 1,240 kWh, up from 1,105 kWh in the same quarter last year.",
+  "Lawn mowing from Tennyson to Grange. Front and back yards, clippings taken away. Ring for a quote.",
+  "The school will save a seat for every child on the bus list; please tell the office of any changes by Friday.",
+  "Researchers at the University of Adelaide published the study in the Medical Journal of Australia in March.",
+  "Rent: $520 per week, paid fortnightly. Lease term 12 months. Bond equal to four weeks' rent.",
+];
