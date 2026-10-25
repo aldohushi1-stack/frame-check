@@ -36,3 +36,15 @@ node tally.mjs
 
 `run.sh` passes the proxy and CA variables through for sandboxed environments; on a normal machine
 with a logged-in `claude`, drop those lines and let the clean HOME log in once.
+
+## Honest control — acceptance test 3
+
+A plain bike-shop price list (`honest/honest-offer.txt`), "what's the catch?", three runs.
+
+| Version | Verdict | Frames named per run |
+| --- | --- | --- |
+| v0.1.0 skill | Fair 3/3 | 4–5 (mild wording padded the table) |
+| v0.1.1 skill — "only list a frame whose flip could change the decision" | Fair 3/3 | 1 each (the open-ended parts cost) |
+
+The v0.1.0 result was the cry-wolf failure the cold review predicted; one line in IN step 2 fixed
+it. Outputs of the v0.1.1 runs are in `honest/run1–3.md`.

@@ -56,8 +56,10 @@ the user sees the line they are choosing not to cross.
 ## IN procedure
 
 1. **The claim.** One line: what they want the user to believe or do.
-2. **Frames spotted.** Quote the exact words, and name the frame from the toolkit. An honest text may
-   carry none; say so rather than straining to find one.
+2. **Frames spotted.** Quote the exact words, and name the frame from the toolkit. Only list a frame
+   whose flip could change what a careful reader decides. Plain description, real inclusions and
+   ordinary sales tone are not frames — leave them out, or give them one line ("Also noticed: …").
+   An honest text may carry none or one; say so plainly rather than straining to fill the table.
 3. **Flip it.** Restate the key claim in the opposite frame.
 4. **Neutral numbers.** Do the maths in plain terms — total cost over the term, absolute risk,
    typical (not best-case) outcome. Show the working. Mark every assumption (a weekly price × 52 is a
