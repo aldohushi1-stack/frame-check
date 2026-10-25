@@ -1,4 +1,4 @@
-/* Frame Check — "What's the catch?" pattern engine.
+/* Frame Check — browser pattern engine.
  * Finds surface frames in persuasive text by pattern, names them with the skill's toolkit,
  * and asks each one's flip as a question. No model, no network. Judgment stays with the reader
  * (and with the frame-check skill, for the subtle ones).
