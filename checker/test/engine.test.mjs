@@ -121,3 +121,81 @@ test("scarcity: plain sentences with 'only' and a number are left alone", () => 
   assert.deepEqual(frames("Only 3 ingredients in our famous banana bread."), []);
   assert.deepEqual(frames("Classes are limited to 6 children per instructor."), []);
 });
+
+// ---- v0.3: what Lochie's DM taught us (27 Oct 2026) ----
+
+const has = (text, frame) => frames(text).includes(frame);
+
+test("curly apostrophes from phones and Facebook count the same as straight ones", () => {
+  assert.ok(has("Don’t miss out!", "Urgency / scarcity"));
+  assert.ok(has("You’re losing customers every day.", "Gain vs loss"));
+  assert.ok(has("Don’t miss out on 40% off.", "Urgency / scarcity"));
+  assert.ok(has("We’ve only got 5 spots left.", "Urgency / scarcity"));
+  const r = FC.scan("Don’t miss out!");
+  assert.equal(r.text.slice(r.findings[0].start, r.findings[0].end), r.findings[0].quote);
+  assert.equal(r.findings[0].quote, "Don’t miss out");
+});
+
+test("scarcity and urgency: the everyday phrasings", () => {
+  for (const t of [
+    "2 spaces left for Saturday.",
+    "Only 3 slots remaining.",
+    "Spaces are limited.",
+    "Limited spots available.",
+    "Spots are filling fast!",
+    "First 10 people only.",
+    "First come, first served.",
+    "This offer won’t last.",
+    "I'm only taking 4 new clients this month.",
+    "Be quick!",
+  ]) assert.ok(has(t, "Urgency / scarcity"), "missed: " + t + " → " + frames(t).join());
+});
+
+test("free trial with no price after it is an omission, and says what to ask", () => {
+  for (const t of [
+    "We are offering you 7 days of FREE access to our gym and group classes!",
+    "Start your free 14-day trial today.",
+    "Try it free for 30 days.",
+    "Your first week free.",
+  ]) {
+    const f = FC.scan(t).findings.find((x) => x.frame === "Omission / default");
+    assert.ok(f, "missed: " + t + " → " + frames(t).join());
+    assert.match(f.flip, /after the free/i);
+  }
+});
+
+test("a free trial that states the price after it is left alone", () => {
+  assert.ok(!has("Want a free week on me? After that it's $25 a week and you can stop anytime.", "Omission / default"));
+  assert.ok(!has("14-day free trial, then $29 a month. Cancel any time.", "Omission / default"));
+});
+
+test("soft guilt is named as its own frame, with a question", () => {
+  const t = "If you're not interested that is totally fine - but I would hate to not offer 😎";
+  const g = FC.scan(t).findings.filter((f) => f.frame === "Soft guilt");
+  assert.ok(g.length >= 1, frames(t).join());
+  assert.ok(g.every((f) => f.flip.endsWith("?")));
+  for (const s of ["No pressure, but I'd hate for you to miss out.", "Totally fine if not, but this is the last round."]) {
+    assert.ok(has(s, "Soft guilt"), "missed: " + s);
+  }
+  assert.ok(FC.FRAMES.guilt === "Soft guilt");
+});
+
+test("Lochie's original lights up three frames; the say-it-straight rewrite raises no pressure frames", () => {
+  const original = "To give you a taste of what we’re all about, we are offering you 7 days of FREE access to our gym and group classes!\n\nWe’ve only got 5 spots left, so if you’re keen to take advantage of this, just reply and I’ll personally reserve a spot for you.\n\nIf you’re not interested that is totally fine - but I would hate to not offer 😎";
+  const names = new Set(frames(original));
+  for (const n of ["Omission / default", "Urgency / scarcity", "Soft guilt"]) assert.ok(names.has(n), "missing " + n + " in " + [...names].join());
+  const rewrite = "Hey, Lochie here, I run the gym on Smart Rd in St Agnes. Want a free week on me? Come any hour, jump in a class, see if it suits. After that it’s $25 a week and you can stop anytime. Either way, all good.";
+  const pressure = frames(rewrite).filter((f) => ["Urgency / scarcity", "Soft guilt", "Omission / default"].includes(f));
+  assert.deepEqual(pressure, []);
+});
+
+test("plain notices with the new trigger words stay quiet", () => {
+  for (const t of [
+    "Tables are limited to 10 people per booking.",
+    "Free parking for the first 2 hours.",
+    "The first 10 minutes are free.",
+    "Entry is free for children under 5.",
+    "Be quiet in the library, please.",
+    "We’re open from 7am. Don’t forget your library card.",
+  ]) assert.deepEqual(frames(t), [], t);
+});

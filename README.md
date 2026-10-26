@@ -9,7 +9,7 @@ An Agent Skill that checks the framing of persuasive text, both ways.
   two or three rewrites on different frames and runs each through a four-question honesty gate —
   with the rejected ones shown, not hidden.
 
-Ten frames, one gate, three verdicts. Built on Loftus & Palmer (1974), Loftus & Pickrell (1995) and
+Eleven frames, one gate, three verdicts. Built on Loftus & Palmer (1974), Loftus & Pickrell (1995) and
 Tversky & Kahneman (1981): words edit what people remember and what they choose.
 
 **Try it without installing anything:** [blueprintau.com/frame-check](https://blueprintau.com/frame-check/) — paste an offer into the browser checker. It runs on your device and sends nothing anywhere.

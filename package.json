@@ -1,7 +1,7 @@
 {
   "name": "frame-check",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Agent Skill + offline browser checker for the framing of persuasive text.",
   "license": "MIT",
   "author": "Aldo Hushi",

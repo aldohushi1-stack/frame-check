@@ -22,6 +22,7 @@
     loss: "Gain vs loss",
     loaded: "Loaded words",
     omission: "Omission / default",
+    guilt: "Soft guilt",
   };
 
   var FLIPS = {
@@ -35,6 +36,7 @@
     loss: "Told as a gain instead, is it still true for you?",
     loaded: "What is the plainest word for this?",
     omission: "What does the fine print say, and does it change the total?",
+    guilt: "Would saying no really let anyone down?",
   };
 
   // priority: when two matches overlap, the higher one is kept.
@@ -47,7 +49,8 @@
     { k: "anchor", p: 6, re: new RegExp("\\bsave\\s+(?:over\\s+|more than\\s+)?(?:" + MONEY + "|" + PCT + ")", "gi") },
     { k: "anchor", p: 6, re: new RegExp("\\b" + PCT + "\\s+off\\b", "gi") },
     { k: "anchor", p: 5, re: new RegExp("\\bindustry average(?:\\s+is)?\\s+" + MONEY + "\\+?", "gi") },
-    { k: "urgency", p: 7, re: /\b(?:only|just|last)\s+(?:(?:have|got|has|had)\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|a few|a handful of)\s+(?:\w+\s+)?(?:left|remaining|available|spots?|places?|seats?|units?|positions?|openings?)\b|\b(?:\d+|one|two|three|four|five|six|a few)\s+(?:\w+\s+)?(?:spots?|places?|seats?|units?)\s+(?:left|remaining)\b/gi },
+    { k: "urgency", p: 7, re: /\b(?:only|just|last)\s+(?:(?:have|got|has|had)\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|a few|a handful of)\s+(?:\w+\s+)?(?:left|remaining|available|spots?|places?|spaces?|slots?|seats?|units?|positions?|openings?)\b|\b(?:\d+|one|two|three|four|five|six|a few)\s+(?:\w+\s+)?(?:spots?|places?|spaces?|slots?|seats?|units?)\s+(?:left|remaining)\b/gi },
+    { k: "urgency", p: 6, re: /\b(?:spots?|places?|spaces?|seats?|slots?)\s+(?:are\s+)?(?:limited|filling\s+(?:up\s+)?(?:fast|quickly)|going\s+fast)\b|\blimited\s+(?:spots?|places?|spaces?|seats?|slots?|numbers|availability)\b|\b(?:be quick|first come,?\s+first served|before (?:it'?s|they'?re) gone)\b|\b(?:offer|deal|price|sale|special)s?\s+won'?t\s+last(?:\s+long)?\b|\bfirst\s+(?:\d+|ten|twenty|fifty|hundred)\s+(?:people|customers|callers|buyers|members|sign-?ups|clients)\b(?:\s+only)?|\bonly\s+(?:taking|accepting)\s+(?:\d+|one|two|three|four|five|six|a few)\s+(?:new\s+)?(?:clients|customers|members|people|students|bookings)\b/gi },
     { k: "urgency", p: 6, re: /\b(?:offer|sale|deal|price|pricing|special)\s+(?:ends|closes|expires)\b(?:\s+(?:today|tonight|tomorrow|midnight|soon|this \w+|on \w+|sunday|monday|tuesday|wednesday|thursday|friday|saturday))?/gi },
     { k: "urgency", p: 5, re: /\bends\s+(?:today|tonight|tomorrow|midnight|soon|sunday|monday|tuesday|wednesday|thursday|friday|saturday|this (?:week|weekend))\b/gi },
     { k: "urgency", p: 5, re: /\b(?:\d+|two|three|four|five|seven)\s+days?\s+only\b|\b(?:today|this weekend|this week)\s+only\b|\b(?:hurry|act now|don'?t miss out|last chance|selling fast|almost gone|while stocks last|limited[- ]time|limited offer|limited stock|limited release)\b/gi },
@@ -73,6 +76,11 @@
     { k: "omission", p: 4, re: /(?<=[\w$%)])\*(?=[\s.,;:!)]|$)/g },
     { k: "omission", p: 4, re: /\b(?:conditions apply|t&cs apply|terms(?: and conditions)? apply|approved applicants|fees apply|by others)\b/gi },
     { k: "omission", p: 3, re: /\bexcludes?\b[^.\n]{0,60}\b/gi },
+    { k: "omission", p: 5, re: /\b(?:\d+|seven|fourteen|thirty)[- ]days?\s+(?:of\s+)?free(?:\s+(?:access|trial|membership|classes))?\b|\bfree\s+(?:\d+|seven|fourteen|thirty)[- ]days?(?:\s+(?:trial|pass|access))?\b|\btry\s+(?:it\s+|us\s+)?(?:for\s+)?free\s+for\s+(?:\d+|a|one|two|seven|fourteen|thirty)\s+(?:days?|weeks?|months?)\b|\b(?:your\s+)?first\s+(?:week|month|class|session)\s+free\b|\bfree\s+(?:trial|week|month|pass)\b/gi,
+      unless: /\b(?:after\s+(?:that|the\s+(?:trial|free\s+\w+|first\s+\w+)|day\s+\d+)|then)\b[^.\n]{0,40}(?:\$\s?\d|free\s+to\s+cancel)/i,
+      flip: "What does it cost after the free part, and do they need your card to start?" },
+    { k: "guilt", p: 5, re: /\b(?:i'?d|i would|we'?d|we would)\s+hate\s+(?:for\s+you\s+)?to\s+(?:not\s+offer|miss(?:\s+out)?|see\s+you\s+miss(?:\s+out)?|leave\s+you\s+out)\b/gi },
+    { k: "guilt", p: 4, re: /\b(?:totally|completely|absolutely)\s+(?:fine|ok|okay|cool)(?:\s+if\s+not)?\s*[-\u2013\u2014,]?\s*but\b|\bno pressure(?:\s+at\s+all)?\s*[-\u2013\u2014,]?\s*but\b/gi },
   ];
 
   var PER = { week: [52, "52 weeks"], wk: [52, "52 weeks"], fortnight: [26, "26 fortnights"], day: [365, "365 days"] };
@@ -110,14 +118,18 @@
 
   function scan(text) {
     text = String(text || "");
+    // Phones type curly apostrophes; match on a same-length straight copy, quote the original.
+    var norm = text.replace(/[\u2018\u2019\u02BC]/g, "'");
     var cands = [];
     DETECTORS.forEach(function (d) {
+      if (d.unless && d.unless.test(norm)) return;
       d.re.lastIndex = 0;
       var m;
-      while ((m = d.re.exec(text))) {
+      while ((m = d.re.exec(norm))) {
         if (!m[0].trim()) { d.re.lastIndex++; continue; }
-        var quote = m[0].replace(/\s+$/, "");
-        var c = { frame: FRAMES[d.k], key: d.k, quote: quote, start: m.index, end: m.index + quote.length, p: d.p, flip: FLIPS[d.k] };
+        var len = m[0].replace(/\s+$/, "").length;
+        var quote = text.slice(m.index, m.index + len);
+        var c = { frame: FRAMES[d.k], key: d.k, quote: quote, start: m.index, end: m.index + len, p: d.p, flip: d.flip || FLIPS[d.k] };
         if (d.maths) {
           var amt = toNum(m[1]), unit = m[2].toLowerCase(), per = PER[unit];
           var perYear = Math.round(amt * per[0] * 100) / 100;

@@ -1,6 +1,6 @@
 ---
 name: frame-check
-description: Check the framing of persuasive text, both ways. Use when the user pastes an offer, ad, quote, property listing, pricing page, contract clause, headline or "study" and asks what's the catch, is this a good deal, or is this misleading. Also use when the user asks to frame, frame-check, sharpen or make honest their own pitch, email, post, landing copy or pricing. Names the frames (gain/loss, relative/absolute, small unit, "up to", anchor, urgency, social proof, loaded words, omission, authority), flips them, runs a four-question honesty gate, and returns a verdict of Fair, Pushy but true, or Misleading.
+description: Check the framing of persuasive text, both ways. Use when the user pastes an offer, ad, quote, property listing, pricing page, contract clause, headline or "study" and asks what's the catch, is this a good deal, or is this misleading. Also use when the user asks to frame, frame-check, sharpen or make honest their own pitch, email, post, landing copy or pricing. Names the frames (gain/loss, relative/absolute, small unit, "up to", anchor, urgency, social proof, loaded words, omission, authority, soft guilt), flips them, runs a four-question honesty gate, and returns a verdict of Fair, Pushy but true, or Misleading.
 ---
 
 # Frame Check
@@ -28,8 +28,9 @@ framing from landing on them unexamined.
 | Urgency / scarcity | "only 3 spots left", "ends Friday" | what happens if you wait? |
 | Social proof | "businesses across the country use…" | how many, named, and checkable? |
 | Loaded words | "smashed" vs "hit"; "investment" vs "cost" | the plainest neutral word |
-| Omission / default | the fine print, the opt-out box | what's missing from the headline |
+| Omission / default | the fine print, the opt-out box, "7 days FREE" with no price after | what's missing from the headline |
 | Authority | "studies show", "experts say" | which study, how many people, who paid? |
+| Soft guilt | "totally fine if not — but I'd hate to not offer" | would saying no really let anyone down? |
 
 ## The honesty gate (every OUT frame must pass all four)
 
