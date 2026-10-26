@@ -47,7 +47,7 @@
     { k: "anchor", p: 6, re: new RegExp("\\bsave\\s+(?:over\\s+|more than\\s+)?(?:" + MONEY + "|" + PCT + ")", "gi") },
     { k: "anchor", p: 6, re: new RegExp("\\b" + PCT + "\\s+off\\b", "gi") },
     { k: "anchor", p: 5, re: new RegExp("\\bindustry average(?:\\s+is)?\\s+" + MONEY + "\\+?", "gi") },
-    { k: "urgency", p: 7, re: /\bonly\s+(?:have\s+)?(?:\d+|one|two|three|four|five|six|a few|a handful of)\s+(?:\w+\s+)?(?:left|remaining|available|spots?|places?|seats?|units?)\b/gi },
+    { k: "urgency", p: 7, re: /\b(?:only|just|last)\s+(?:(?:have|got|has|had)\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|a few|a handful of)\s+(?:\w+\s+)?(?:left|remaining|available|spots?|places?|seats?|units?|positions?|openings?)\b|\b(?:\d+|one|two|three|four|five|six|a few)\s+(?:\w+\s+)?(?:spots?|places?|seats?|units?)\s+(?:left|remaining)\b/gi },
     { k: "urgency", p: 6, re: /\b(?:offer|sale|deal|price|pricing|special)\s+(?:ends|closes|expires)\b(?:\s+(?:today|tonight|tomorrow|midnight|soon|this \w+|on \w+|sunday|monday|tuesday|wednesday|thursday|friday|saturday))?/gi },
     { k: "urgency", p: 5, re: /\bends\s+(?:today|tonight|tomorrow|midnight|soon|sunday|monday|tuesday|wednesday|thursday|friday|saturday|this (?:week|weekend))\b/gi },
     { k: "urgency", p: 5, re: /\b(?:\d+|two|three|four|five|seven)\s+days?\s+only\b|\b(?:today|this weekend|this week)\s+only\b|\b(?:hurry|act now|don'?t miss out|last chance|selling fast|almost gone|while stocks last|limited[- ]time|limited offer|limited stock|limited release)\b/gi },

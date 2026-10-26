@@ -98,3 +98,26 @@ test("quotes end on a word boundary; short month spans are not offered as a term
   assert.equal(FC.scan("Save 2 months when you pay yearly.").termHint, null);
   assert.equal(FC.scan("0% interest for 24 months").termHint, 2);
 });
+
+test("scarcity: how people really write it is caught (Lochie's DM, 26 Oct 2026)", () => {
+  const caught = [
+    "We've only got 5 spots left, so if you're keen to take advantage of this, just reply.",
+    "Just 4 seats left for Saturday.",
+    "Grab one of the last 5 spots.",
+    "We've got 5 spots left this week.",
+    "Only 3 left!",
+    "We only have two places remaining.",
+  ];
+  for (const t of caught) {
+    const u = FC.scan(t).findings.find((f) => f.frame === "Urgency / scarcity");
+    assert.ok(u, "missed: " + t);
+  }
+  const lochie = FC.scan("We've only got 5 spots left, so if you're keen to take advantage of this, just reply and I'll personally reserve a spot for you.");
+  assert.equal(lochie.findings.find((f) => f.frame === "Urgency / scarcity").quote, "only got 5 spots left");
+});
+
+test("scarcity: plain sentences with 'only' and a number are left alone", () => {
+  assert.deepEqual(frames("I only got 5 minutes with the agent."), []);
+  assert.deepEqual(frames("Only 3 ingredients in our famous banana bread."), []);
+  assert.deepEqual(frames("Classes are limited to 6 children per instructor."), []);
+});
